@@ -25,16 +25,16 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 params = {}
 # ============================================= Specify your settings within this block for a local test ===================================================
-params['device'] = 'local'           # 'local' or 'cluster'
-params['device platform'] = 'macos'  # 'macos' or 'linux' or 'WSL' (Windows Subsystem for Linux). Not supporting pure Windows OS (due to NUPACK)
-params['platform'] = 'CPU'           # 'CPU' or 'CUDA'
+params['device'] = 'cluster'           # 'local' or 'cluster'
+params['device platform'] = 'linux'  # 'macos' or 'linux' or 'WSL' (Windows Subsystem for Linux). Not supporting pure Windows OS (due to NUPACK)
+params['platform'] = 'CUDA'           # 'CPU' or 'CUDA'
 if params['platform'] == 'CUDA': params['platform precision'] = 'single'  # 'single' or 'double'
 if params['device'] == 'local':
     params['workdir'] = '/path-to-E2EDNA2-main/localruns'                  # directory manually created to store all future jobs
     params['mmb dir'] = '/path-to-E2EDNA2-main/Installer.3_0.OSX/lib'      # path to MMB dylib files  # need to tell OS where to find the library files. All MMB files are in the same direcotory.
     params['mmb']     = '/path-to-E2EDNA2-main/Installer.3_0.OSX/bin/MMB'  # path to the MMB executable; MMB is the *name* of the executable here
 else:  # params['device'] == 'cluster':
-    params['workdir'] = '/home/taoliu/scratch/runs'
+    params['workdir'] = '' 
     params['mmb dir'] = '~/projects/def-simine/programs/MMB/Installer.2_14.Linux64'
     params['mmb'] = '~/projects/def-simine/programs/MMB/Installer.2_14.Linux64/MMB.2_14.Linux64'
 params['explicit run enumeration'] = True  # To resume a previous run from .chk file, use ``False`` here
@@ -92,7 +92,7 @@ if params['implicit solvent'] is True:
     params['DNA force field'] = 'DNA.OL15'  # 'DNA.OL15' or 'DNA.bsc1': used by free aptamer MD sampling in implicit solvent.
                                             # For complex MD sampling: if target is peptide or RNA, will add "leaprc.protein.ff14SB" or "source leaprc.RNA.OL3" to leap input file.
 params['build a peptide as target ligand'] = False
-params['peptide backbone constraint constant'] = 0  # if target ligand is a peptide, we can choose to put constraint on the peptide's dihedral angles. force constant k. 
+params['peptide backbone constraint constant'] = cmdLineInputs[6]  # if target ligand is a peptide, we can choose to put constraint on the peptide's dihedral angles. force constant k. 
 # Ask Ilya: What's its unit? Only works if the target ligand is a peptide?
 # ************************************************************************************************************************************************************
 
@@ -103,7 +103,7 @@ if params['skip MMB'] is True: params['folded initial structure'] = 'foldedAptam
 if params['test mode'] is True:          # shortcut for debugging or running the code for the first time (validation)
     params['N 2D structures'] = 1        # the clustering algorithm will stop when there are two structures left???
     params['fold speed'] = 'quick'      # 'quick'
-    params['equilibration time'] = 0.0001  # ns. 50 steps
+    params['equilibration time'] = 0.01  # ns. 50 steps
     params['smoothing time'] = 0.001       # ns. 500 steps
     params['sampling time'] = 0.002        # ns. 1000 steps
     params['time step'] = 2.0              # fs
@@ -119,10 +119,10 @@ else:
     params['fold speed'] = 'normal'  # 'quick', 'normal', 'long' - time to spend on first fold attempt - faster is cheaper but may not reach correct configuration, particularly for larger aptamers. 'normal' is default
     params['equilibration time'] = 0.1  # 0.01 # initial equilibration time in nanoseconds
     params['smoothing time'] = 1        # ns. MD relax after getting the initial 3D structure from user or MMB before sampling
-    params['sampling time'] = 100       # sampling time in nanoseconds - in auto-sampling, this is the segment-length for each segment
+    params['sampling time'] = 1       # sampling time in nanoseconds - in auto-sampling, this is the segment-length for each segment
     params['time step'] = 2.0           # MD time step in fs
-    params['print step'] = 10           # MD printout step in ps. ns > ps > fs
-    params['max aptamer sampling iterations'] = 20   # number of allowable iterations before giving on auto-sampling - total max simulation length = this * sampling time
+    params['print step'] = 5           # MD printout step in ps. ns > ps > fs
+    params['max aptamer sampling iterations'] = 5   # number of allowable iterations before giving on auto-sampling - total max simulation length = this * sampling time
     params['max complex sampling iterations'] = 5    # number of iterations for the binding complex
     params['autoMD convergence cutoff'] = 1e-2       # how small should average of PCA slopes be to count as 'converged' 
                                                      # TODO: where is the PCA used? to cluster conformations to obtain a representive one? 
