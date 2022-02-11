@@ -34,7 +34,7 @@ if params['device'] == 'local':
     params['mmb dir'] = '/path-to-E2EDNA2-main/Installer.3_0.OSX/lib'      # path to MMB dylib files  # need to tell OS where to find the library files. All MMB files are in the same direcotory.
     params['mmb']     = '/path-to-E2EDNA2-main/Installer.3_0.OSX/bin/MMB'  # path to the MMB executable; MMB is the *name* of the executable here
 else:  # params['device'] == 'cluster':
-    params['workdir'] = '' 
+    params['workdir'] = ''
     params['mmb dir'] = '~/projects/def-simine/programs/MMB/Installer.2_14.Linux64'
     params['mmb'] = '~/projects/def-simine/programs/MMB/Installer.2_14.Linux64/MMB.2_14.Linux64'
 params['explicit run enumeration'] = True  # To resume a previous run from .chk file, use ``False`` here
@@ -87,7 +87,7 @@ params['ionicStrength'] = 0.150      # Molar: sodium concentration - used to pre
 params['[Mg]'] = 0.005               # Molar: magnesium concentration: 0.2 M > [Mg] > 0 - ONLY applies to NuPack fold - Does NOT add Mg to OpenMM simulation.
 params['pH'] = 7.4                   # simulation will automatically protonate the target, such as a peptide, up to this pH. Used in OpenMM for waterBox
 
-if params['implicit solvent'] is True: 
+if params['implicit solvent']: 
     params['impSolv'] = 'HCT'  # 'HCT', 'OBC1', 'OBC2', 'GBn' or 'GBn2'
     params['DNA force field'] = 'DNA.OL15'  # 'DNA.OL15' or 'DNA.bsc1': used by free aptamer MD sampling in implicit solvent.
                                             # For complex MD sampling: if target is peptide or RNA, will add "leaprc.protein.ff14SB" or "source leaprc.RNA.OL3" to leap input file.
@@ -96,11 +96,11 @@ params['peptide backbone constraint constant'] = cmdLineInputs[6]  # if target l
 # Ask Ilya: What's its unit? Only works if the target ligand is a peptide?
 # ************************************************************************************************************************************************************
 
-if params['skip MMB'] is True: params['folded initial structure'] = 'foldedAptamer_0.pdb'  
+if params['skip MMB']: params['folded initial structure'] = 'foldedAptamer_0.pdb'  
     # if skipping MMB, must provide a folded structure
     # what if >1 folded structures or 2nd structures?
 
-if params['test mode'] is True:          # shortcut for debugging or running the code for the first time (validation)
+if params['test mode']:          # shortcut for debugging or running the code for the first time (validation)
     params['N 2D structures'] = 1        # the clustering algorithm will stop when there are two structures left???
     params['fold speed'] = 'quick'      # 'quick'
     params['equilibration time'] = 0.01  # ns. 50 steps
@@ -132,7 +132,7 @@ else:
 
 # OpenMM params
 # If wants to resume a simulation, user must specify the chk file, which will be copied to the workdir
-if params['pick up from freeAptamerChk'] is True:
+if params['pick up from freeAptamerChk']:
     params['chk file'] = 'relaxedAptamer_0_processed_state.chk'
     # CAUTIOUS: a .chk file created on CUDA platform cannot be run on a CPU platform.
     ''' A checkpoint contains data that is highly specific to the Context from which it was created.
@@ -150,7 +150,7 @@ if params['pick up from freeAptamerChk'] is True:
 else:
     params['chk file'] = ""  # empty string <==> not resume a sampling from .chk file
 # Can only pick up from freeAptamerChk or complexChk. It makes no sense to resume both free aptamer and aptamer-ligand dynamics
-if params['pick up from complexChk'] is True:
+if params['pick up from complexChk']:
     params['chk file'] = 'complex_1_2_processed_state.chk'
     if params['implicit solvent'] is False:  # in explicit solvent
         params['resumed structurePDB'] = 'complex_1_2_processed.pdb'  # everything before _state then + .pdb # Just to provide the structureName
@@ -182,7 +182,7 @@ params['constraint tolerance'] = 1e-6  # What is this tolerance for? For constra
 params['hydrogen mass'] = 1.5  # in a.m.u. - we can increase the sampling time if we use heavier hydrogen
 
 # Specify implicit solvent model
-if params['implicit solvent'] is True: # Select an implicit solvent model
+if params['implicit solvent']: # Select an implicit solvent model
     if params['impSolv'] == 'HCT':
         params['implicit solvent model'] = HCT
     elif params['impSolv'] == 'OBC1':
