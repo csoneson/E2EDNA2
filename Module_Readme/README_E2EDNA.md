@@ -72,6 +72,6 @@ The two current conditions for calling off an MD run are:
 Equilibration here is defined by the eigenvalue-weighted average slopes of the principal components of the 3D trajectory approaching zero, indicating either static behaviour or a sufficiently well-explored potential energy surface.
 * Unbinding: if OpenDNA detects that the analyte has detached from the aptamer and does not make contact for a preset amount of time (default = 1 nanosecond), the binding simulation will cut off, and the analyte-peptide pair are considered to be non-binding.
 
-## SLURM HPC Cluster Job submission
+## SLURM HPC Cluster Job Submission
 
 One can use the ```EXAMPLE_SUB_cluster.sh``` file to submit a file on SLURM-managed clusters. This can also serve as a template or guideline to make your own job submission file for a non-SLURM cluster.
