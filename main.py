@@ -26,33 +26,33 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 params = {}
 # ============================================= Specify your settings within this block for a local test ===================================================
 params['device'] = 'local'           # 'local' or 'cluster'
-params['device platform'] = 'macos'  # 'macos' or 'linux' or 'WSL' (Windows Subsystem for Linux). Not supporting pure Windows OS (due to NUPACK)
-params['platform'] = 'CPU'           # 'CPU' or 'CUDA'
+params['device platform'] = 'linux'  # 'macos' or 'linux' or 'WSL' (Windows Subsystem for Linux). Not supporting pure Windows OS (due to NUPACK)
+params['platform'] = 'CUDA'           # 'CPU' or 'CUDA'
 if params['platform'] == 'CUDA': params['platform precision'] = 'single'  # 'single' or 'double'
 if params['device'] == 'local':
-    params['workdir'] = '/path-to-E2EDNA2-JOSS/localruns'                  # directory manually created to store all future jobs
-    params['mmb dir'] = '/path-to-E2EDNA2-JOSS/Installer.3_0.OSX/lib'      # path to MMB dylib files  # need to tell OS where to find the library files. All MMB files are in the same direcotory.
-    params['mmb']     = '/path-to-E2EDNA2-JOSS/Installer.3_0.OSX/bin/MMB'  # path to the MMB executable; MMB is the *name* of the executable here
+    params['workdir'] = '/home/mkilgour/dna_runs'                  # directory manually created to store all future jobs
+    params['mmb dir'] = '/home/mkilgour/Installer.2_19.Ubuntu18.04/lib'      # path to MMB dylib files  # need to tell OS where to find the library files. All MMB files are in the same direcotory.
+    params['mmb']     = '/home/mkilgour/Installer.2_19.Ubuntu18.04/bin/MMB'  # path to the MMB executable; MMB is the *name* of the executable here
 else:  # params['device'] == 'cluster':
     params['workdir'] = '/home/taoliu/scratch/runs'
     params['mmb dir'] = '~/projects/def-simine/programs/MMB/Installer.2_14.Linux64'
     params['mmb'] = '~/projects/def-simine/programs/MMB/Installer.2_14.Linux64/MMB.2_14.Linux64'
-params['explicit run enumeration'] = True  # To resume a previous run from .chk file, use ``False`` here
+params['explicit run enumeration'] = False  # To resume a previous run from .chk file, use ``False`` here
 cmdLineInputs = get_input()  # get input arguments from command lines
-params['run num'] = cmdLineInputs[0]
-params['mode'] = cmdLineInputs[1]
-params['aptamerSeq'] = cmdLineInputs[2]
-params['target ligand'] = cmdLineInputs[3]
-params['target ligand type'] = cmdLineInputs[4]
-params['target sequence'] = cmdLineInputs[5]
-# params['run num'] = 1  # 0: auto-increase run-num for a fresh run; > 0 AND params['explicit run enumeration'] = True: fresh run; > 0 AND params['explicit run enumeration'] = False: pickup on a previous run;
-# params['mode'] = 'full binding'  # specify simulation mode
-# params['aptamerSeq'] = 'TAATGTTAATTG'  # manually set DNA aptamer sequence from 5' to 3'
-# params['target ligand'] = 'YQTQ.pdb'  # pdb filename of the target ligand. If no target, use 'False', such as in 'free aptamer' mode.
-# params['target ligand type'] = 'peptide'  # 'peptide' or 'DNA' or 'RNA' or 'other'; This is ignored if no target.
-# params['target sequence'] = 'YQTQTNSPRRAR'  # empty string, unless target ligand has sequence.
-params['example target pdb'] = 'lib/peptide/peptide.pdb'   # an example of target ligand: a peptide, used when no given target but want to do docking
-params['example peptide sequence'] = 'YQTQTNSPRRAR'        # YQTQ.pdb
+#params['run num'] = cmdLineInputs[0]
+#params['mode'] = cmdLineInputs[1]
+#params['aptamerSeq'] = cmdLineInputs[2]
+#params['target ligand'] = cmdLineInputs[3]
+#params['target ligand type'] = cmdLineInputs[4]
+#params['target sequence'] = cmdLineInputs[5]
+params['run num'] = 0  # 0: auto-increase run-num for a fresh run; > 0 AND params['explicit run enumeration'] = True: fresh run; > 0 AND params['explicit run enumeration'] = False: pickup on a previous run;
+params['mode'] = 'full binding'  # specify simulation mode
+params['aptamerSeq'] = 'GCGCGCGCGCGC'  # manually set DNA aptamer sequence from 5' to 3'
+params['target ligand'] = 'YQTQ.pdb'  # pdb filename of the target ligand. If no target, use 'False', such as in 'free aptamer' mode.
+params['target ligand type'] = 'peptide'  # 'peptide' or 'DNA' or 'RNA' or 'other'; This is ignored if no target.
+params['target sequence'] = 'YQTQ'  # empty string, unless target ligand has sequence.
+#params['example target pdb'] = 'lib/peptide/peptide.pdb'   # an example of target ligand: a peptide, used when no given target but want to do docking
+#params['example peptide sequence'] = 'YQTQTNSPRRAR'        # YQTQ.pdb
 ''' params['mode'] can be:
     '2d structure': ssString, pair list and probability
     '3d coarse': MMB output, stressed structure, no solvent
@@ -80,7 +80,7 @@ params['pick up from freeAptamerChk'] = False  # ``True``: resume a MD of free a
 params['pick up from complexChk'] = False      # ``True``: resume a MD of aptamer-ligand, must provide a .chk file below. Skip everything before. Not complete
 # Can only pick up from freeAptamerChk or complexChk. It makes no sense to resume both free aptamer and aptamer-ligand dynamics
 
-params['max walltime'] = 24          # hours
+params['max walltime'] = 1          # hours
 params['pressure'] = 1               # 1 standard atmosphere
 params['temperature'] = 298          # Kevin: used to predict secondary structure and for MD thermostat
 params['ionicStrength'] = 0.150      # Molar: sodium concentration - used to predict secondary structure and add ions to simulation box, must be 1100 M > [Na] > 50 for nupack to run    

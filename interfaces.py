@@ -153,7 +153,9 @@ class mmb:  # MacroMolecule Builder (MMB)
             try:
                 attempts += 1                
                 if (self.device == 'local') and (self.devicePlatform == 'macos'):  # special care for macos. Assume no cluster is on macos
-                    os.system('export DYLD_LIBRARY_PATH=' + self.mmbDylibPath + ';' + self.mmbPath + ' -c ' + self.comFile + ' > outfiles/fold.out')    
+                    os.system('export DYLD_LIBRARY_PATH=' + self.mmbDylibPath + ';' + self.mmbPath + ' -c ' + self.comFile + ' > outfiles/fold.out')
+                elif (self.device == 'local') and ((self.devicePlatform == 'linux') or (self.devicePlatform.lower() == 'wsl')):
+                    os.system('export LD_LIBRARY_PATH=' + self.mmbDylibPath + ';' + self.mmbPath + ' -c ' + self.comFile + ' > outfiles/fold.out')
                 else:  # linux or WSL: "LD_LIBRARY_PATH" is specified in opendna.py ('local') or sub.sh ('cluster')
                     os.system(self.mmbPath + ' -c ' + self.comFile + ' > outfiles/fold.out')  # should we append new outputs to the fold.out?
                 os.replace('frame.pdb', self.foldedAptamerSeq)
